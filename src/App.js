@@ -1,5 +1,5 @@
-import { DataStore } from '@aws-amplify/datastore';
 import { withAuthenticator } from '@aws-amplify/ui-react'; // or 'aws-amplify-react-native';
+import { DataStore } from 'aws-amplify';
 import { useState } from 'react';
 import { CreateNote, NavBar, NoteUICollection, UpdateNote } from './ui-components';
 
@@ -17,8 +17,8 @@ function App({ signOut }) {
           Button31632483: { onClick: () => setShowCreateModal(true) },
           Button31632487: {
             onClick: async () => {
-              signOut()
               await DataStore.clear()
+              signOut()
             }
           }
         }} />
@@ -38,10 +38,23 @@ function App({ signOut }) {
         }} />
       </div>
       <div className='modal' style={{ display: showCreateModal === false && 'none' }}>
-        <CreateNote overrides={{ MyIcon: { as: 'button', onClick: () => setShowCreateModal(false) } }} />
+        <CreateNote overrides={
+          {
+            MyIcon: {
+              as: 'button',
+              onClick: () => setShowCreateModal(false)
+            }
+          }
+        } />
       </div>
       <div className='modal' style={{ display: showUpdateModal === false && 'none' }}>
-        <UpdateNote note={updateNote} overrides={{ MyIcon: { as: 'button', onClick: () => setShowUpdateModal(false) } }} />
+        <UpdateNote note={updateNote} overrides={
+          {
+            MyIcon: {
+              as: 'button',
+              onClick: () => setShowUpdateModal(false)
+            }
+          }} />
       </div>
     </>
   );
